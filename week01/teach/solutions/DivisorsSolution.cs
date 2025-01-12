@@ -17,7 +17,7 @@ public static class DivisorsSolution
     /// <returns>List of divisors</returns>
     private static List<int> FindDivisors(int number) {
         List<int> results = new();
-        for (int i = 1; i < number; ++i) {
+        for (int i = 1; i <= number / 2 ; ++i) {
             if (number % i == 0) {
                 results.Add(i);
             }
