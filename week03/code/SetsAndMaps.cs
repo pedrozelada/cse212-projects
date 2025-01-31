@@ -22,7 +22,25 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var pairs = new HashSet<string>();
+        var unique = new HashSet<string>();
+        foreach (var x in words)
+        {
+            var reversed = new string(x.Reverse().ToArray());
+
+            if (unique.Contains(reversed) && x != reversed)  
+            { 
+                string pair = $"{x} & {reversed}";
+                pairs.Add(pair);
+            }
+            else
+            {
+                unique.Add(x);
+            }
+
+        }
+
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +61,12 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree))
+                degrees[degree] ++;
+            else
+                degrees[degree] = 1;
+
         }
 
         return degrees;
@@ -66,8 +90,25 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
+    // TODO Problem 3 - ADD YOUR CODE HERE
+    var dict = new Dictionary<char, int>();
+    word1 = word1.ToLower().Replace(" ", "");
+    word2 = word2.ToLower().Replace(" ", "");
+    if (word1.Length != word2.Length) 
+    {
         return false;
+    }
+
+    foreach (char c in word1)
+        dict[c] = dict.GetValueOrDefault(c, 0) + 1;
+
+    foreach (char c in word2)
+    {
+        if (!dict.ContainsKey(c) || --dict[c] < 0)
+            return false;
+    }
+
+    return true;
     }
 
     /// <summary>
@@ -101,6 +142,10 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        var earthquakeSummaries = featureCollection.Features
+        .Select(f => $"{f.Properties.Place} - Mag {f.Properties.Mag}")
+        .ToArray();
+
+        return earthquakeSummaries;
     }
 }
